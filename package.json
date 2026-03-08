@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "axios": "^1.13.6",
+    "socket.io-client": "^4.8.3"
+  },
+  "scripts": {
+  "start": "node server.js",
+  "dev": "nodemon server.js"
+}
+}
