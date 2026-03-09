@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum Category {
+  TECHNICAL
+  HR
+}
+
+model Question {
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  company         String
+  role            String
+  techStack       String[]
+  difficulty      Difficulty
+  category        Category   @default(TECHNICAL)
+  interviewRound  String
+  description     String
+  experience      String?
+  status          Status     @default(PENDING)
+  upvotes         String[]
+  answer          String?
+  createdAt       DateTime   @default(now())
+}
+
+model AdminSettings {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  password String @default("admin123")
+}
+
+model Resource {
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  links       ResourceLink[]
+  category    String
+  createdAt   DateTime       @default(now())
+}
+
+type ResourceLink {
+  label String
+  url   String
+}
