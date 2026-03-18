@@ -3,7 +3,7 @@ import axios from 'axios';
 import QuestionCard from '../components/QuestionCard';
 import { Search, Loader2, ChevronLeft, ChevronRight, Zap } from 'lucide-react';
 import io from 'socket.io-client';
-import API_URL from '../api/config';
+import API_URL, { IS_PRODUCTION } from '../api/config';
 
 const Home = () => {
     const [questions, setQuestions] = useState([]);
@@ -33,6 +33,8 @@ const Home = () => {
     }, [fetchQuestions]);
 
     useEffect(() => {
+        if (IS_PRODUCTION) return; // Socket.io does not work on Vercel Serverless
+
         const socket = io(API_URL);
         socket.on('newQuestion', (newQuestion) => {
             setQuestions(prev => [newQuestion, ...prev].slice(0, 10));
