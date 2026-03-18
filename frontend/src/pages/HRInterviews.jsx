@@ -1,3 +1,6 @@
+import React, { useEffect, useState, useCallback } from 'react';
+import axios from 'axios';
+import QuestionCard from '../components/QuestionCard';
 import { MessageCircle, Loader2, Sparkles } from 'lucide-react';
 import API_URL from '../api/config';
 

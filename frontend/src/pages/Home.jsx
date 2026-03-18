@@ -1,3 +1,7 @@
+import React, { useEffect, useState, useCallback } from 'react';
+import axios from 'axios';
+import QuestionCard from '../components/QuestionCard';
+import { Search, Loader2, ChevronLeft, ChevronRight, Zap } from 'lucide-react';
 import io from 'socket.io-client';
 import API_URL from '../api/config';
 

@@ -1,3 +1,6 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { Send, Building2, Briefcase, Code, HelpCircle, Star, MessageSquare, Plus, Trash2, Loader2, Sparkles } from 'lucide-react';
 import API_URL from '../api/config';
 
