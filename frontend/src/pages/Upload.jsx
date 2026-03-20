@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Send, Building2, Briefcase, Code, HelpCircle, Star, MessageSquare, Plus, Trash2, Loader2, Sparkles } from 'lucide-react';
 import API_URL from '../api/config';
+import StatusModal from '../components/StatusModal';
 
 const Upload = () => {
     const [common, setCommon] = useState({
@@ -22,6 +23,7 @@ const Upload = () => {
     const [isRoundOther, setIsRoundOther] = useState(false);
 
     const [submitting, setSubmitting] = useState(false);
+    const [modalState, setModalState] = useState({ isOpen: false, type: 'success', title: '', message: '' });
     const navigate = useNavigate();
 
     const addQuestion = () => {
@@ -69,17 +71,45 @@ const Upload = () => {
             });
 
             await Promise.all(promises);
-            alert("All questions submitted successfully! Waiting for admin approval.");
-            navigate('/');
+            setModalState({
+                isOpen: true,
+                type: 'success',
+                title: 'Experience Shared!',
+                message: 'Your questions have been submitted successfully and are waiting for admin approval. Thank you for contributing!'
+            });
         } catch (err) {
-            alert(err.response?.data?.message || "Submission failed");
+            setModalState({
+                isOpen: true,
+                type: 'error',
+                title: 'Submission Failed',
+                message: err.response?.data?.message || 'Something went wrong. Please check your connection and try again.'
+            });
         } finally {
             setSubmitting(false);
         }
     };
 
+    const closeModal = () => setModalState({ ...modalState, isOpen: false });
+
+    const handleModalAction = () => {
+        if (modalState.type === 'success') {
+            navigate('/');
+        } else {
+            closeModal();
+        }
+    };
+
     return (
         <div className="max-w-5xl mx-auto px-4 py-12">
+            <StatusModal
+                isOpen={modalState.isOpen}
+                type={modalState.type}
+                title={modalState.title}
+                message={modalState.message}
+                onClose={closeModal}
+                onAction={handleModalAction}
+                actionLabel={modalState.type === 'success' ? 'Go to Dashboard' : 'Try Again'}
+            />
             <div className="border rounded-[2rem] p-8" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
                 <div className="flex items-center justify-between mb-10 pb-6 border-b" style={{ borderColor: 'var(--border-color)' }}>
                     <div className="flex items-center gap-4">

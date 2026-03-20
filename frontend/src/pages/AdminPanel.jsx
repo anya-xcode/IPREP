@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import axios from 'axios';
 import { CheckCircle, XCircle, Clock, Trash2, Edit3, ShieldAlert, User, Search, Save, X, Filter, Building2, Calendar, ShieldCheck, Lock, Unlock, BookOpen, PlusSquare, Loader2 } from 'lucide-react';
 import API_URL from '../api/config';
+import StatusModal from '../components/StatusModal';
 
 const AdminPanel = () => {
     const [questions, setQuestions] = useState([]);
@@ -25,6 +26,9 @@ const AdminPanel = () => {
     const [resourceForm, setResourceForm] = useState({ title: '', description: '', links: [{ label: '', url: '' }], category: 'Article' });
     const [resourceLoading, setResourceLoading] = useState(false);
     const [editingResourceId, setEditingResourceId] = useState(null);
+    const [modalState, setModalState] = useState({ isOpen: false, type: 'success', title: '', message: '' });
+    const [pendingDeleteId, setPendingDeleteId] = useState(null);
+    const [pendingDeleteType, setPendingDeleteType] = useState(null);
 
     const fetchData = useCallback(async () => {
         setLoading(true);
@@ -91,23 +95,34 @@ const AdminPanel = () => {
                 headers: { 'Admin-Password': savedPass }
             });
             setQuestions(prev => prev.filter(q => q.id !== id));
+            setModalState({ isOpen: true, type: 'success', title: status === 'APPROVED' ? 'Question Approved!' : 'Question Rejected!', message: status === 'APPROVED' ? 'The question has been approved and is now visible to users.' : 'The question has been rejected.' });
         } catch (err) {
-            alert("Action failed");
+            setModalState({ isOpen: true, type: 'error', title: 'Action Failed', message: err.response?.data?.message || 'Failed to update the question status. Please try again.' });
         }
     }, []);
 
-    const handleDelete = useCallback(async (id) => {
-        if (!window.confirm("Are you sure you want to delete this question?")) return;
+    const handleDelete = useCallback((id) => {
+        setPendingDeleteId(id);
+        setPendingDeleteType('question');
+        setModalState({ isOpen: true, type: 'confirm', title: 'Delete Question?', message: 'This action cannot be undone. Are you sure you want to delete this question?' });
+    }, []);
+
+    const confirmDeleteQuestion = useCallback(async () => {
+        if (!pendingDeleteId) return;
         const savedPass = sessionStorage.getItem('adminPassword');
         try {
-            await axios.delete(`${API_URL}/api/questions/${id}`, {
+            await axios.delete(`${API_URL}/api/questions/${pendingDeleteId}`, {
                 headers: { 'Admin-Password': savedPass }
             });
-            setQuestions(prev => prev.filter(q => q.id !== id));
+            setQuestions(prev => prev.filter(q => q.id !== pendingDeleteId));
+            setModalState({ isOpen: true, type: 'success', title: 'Question Deleted!', message: 'The question has been removed successfully.' });
         } catch (err) {
-            alert("Delete failed");
+            setModalState({ isOpen: true, type: 'error', title: 'Delete Failed', message: 'Failed to delete the question. Please try again.' });
+        } finally {
+            setPendingDeleteId(null);
+            setPendingDeleteType(null);
         }
-    }, []);
+    }, [pendingDeleteId]);
 
     const startEdit = useCallback((q) => {
         setEditingId(q.id);
@@ -117,13 +132,16 @@ const AdminPanel = () => {
     const saveEdit = useCallback(async () => {
         const savedPass = sessionStorage.getItem('adminPassword');
         try {
-            await axios.put(`${API_URL}/api/questions/${editingId}`, editForm, {
+            const { company, description, role, techStack, difficulty, category, interviewRound, experience, answer } = editForm;
+            const updateData = { company, description, role, techStack, difficulty, category, interviewRound, experience, answer };
+            const { data } = await axios.put(`${API_URL}/api/questions/${editingId}`, updateData, {
                 headers: { 'Admin-Password': savedPass }
             });
-            setQuestions(prev => prev.map(q => q.id === editingId ? { ...editForm } : q));
+            setQuestions(prev => prev.map(q => q.id === editingId ? data : q));
             setEditingId(null);
+            setModalState({ isOpen: true, type: 'success', title: 'Question Updated!', message: 'The question has been updated successfully.' });
         } catch (err) {
-            alert("Update failed");
+            setModalState({ isOpen: true, type: 'error', title: 'Update Failed', message: err.response?.data?.message || 'Failed to update the question. Please try again.' });
         }
     }, [editingId, editForm]);
 
@@ -156,18 +174,18 @@ const AdminPanel = () => {
                 await axios.put(`${API_URL}/api/resources/${editingResourceId}`, resourceForm, {
                     headers: { 'Admin-Password': savedPass }
                 });
-                alert("Resource updated!");
+                setModalState({ isOpen: true, type: 'success', title: 'Resource Updated!', message: 'The resource has been updated successfully.' });
             } else {
                 await axios.post(`${API_URL}/api/resources`, resourceForm, {
                     headers: { 'Admin-Password': savedPass }
                 });
-                alert("Resource added!");
+                setModalState({ isOpen: true, type: 'success', title: 'Resource Added!', message: 'The new resource has been added successfully.' });
             }
             setResourceForm({ title: '', description: '', links: [{ label: '', url: '' }], category: 'Article' });
             setEditingResourceId(null);
             fetchAdminResources();
         } catch (err) {
-            alert(editingResourceId ? "Failed to update resource" : "Failed to add resource");
+            setModalState({ isOpen: true, type: 'error', title: 'Operation Failed', message: err.response?.data?.message || (editingResourceId ? 'Failed to update resource. Please try again.' : 'Failed to add resource. Please try again.') });
         }
     }, [editingResourceId, resourceForm, fetchAdminResources]);
 
@@ -190,18 +208,28 @@ const AdminPanel = () => {
         setResourceForm({ title: '', description: '', links: [{ label: '', url: '' }], category: 'Article' });
     }, []);
 
-    const handleDeleteResource = useCallback(async (id) => {
-        if (!window.confirm("Delete this resource?")) return;
+    const handleDeleteResource = useCallback((id) => {
+        setPendingDeleteId(id);
+        setPendingDeleteType('resource');
+        setModalState({ isOpen: true, type: 'confirm', title: 'Delete Resource?', message: 'This action cannot be undone. Are you sure you want to delete this resource?' });
+    }, []);
+
+    const confirmDeleteResource = useCallback(async () => {
+        if (!pendingDeleteId) return;
         const savedPass = sessionStorage.getItem('adminPassword');
         try {
-            await axios.delete(`${API_URL}/api/resources/${id}`, {
+            await axios.delete(`${API_URL}/api/resources/${pendingDeleteId}`, {
                 headers: { 'Admin-Password': savedPass }
             });
-            setResources(prev => prev.filter(r => r.id !== id));
+            setResources(prev => prev.filter(r => r.id !== pendingDeleteId));
+            setModalState({ isOpen: true, type: 'success', title: 'Resource Deleted!', message: 'The resource has been removed successfully.' });
         } catch (err) {
-            alert("Delete failed");
+            setModalState({ isOpen: true, type: 'error', title: 'Delete Failed', message: 'Failed to delete the resource. Please try again.' });
+        } finally {
+            setPendingDeleteId(null);
+            setPendingDeleteType(null);
         }
-    }, []);
+    }, [pendingDeleteId]);
 
     const handleLogout = useCallback(() => {
         sessionStorage.clear();
@@ -255,8 +283,35 @@ const AdminPanel = () => {
         );
     }
 
+    const closeModal = () => {
+        setModalState({ ...modalState, isOpen: false });
+        setPendingDeleteId(null);
+        setPendingDeleteType(null);
+    };
+
+    const handleModalAction = () => {
+        if (modalState.type === 'confirm') {
+            if (pendingDeleteType === 'question') {
+                confirmDeleteQuestion();
+            } else {
+                confirmDeleteResource();
+            }
+        } else {
+            closeModal();
+        }
+    };
+
     return (
         <div className="max-w-7xl mx-auto px-4 py-16 animate-in fade-in duration-700">
+            <StatusModal
+                isOpen={modalState.isOpen}
+                type={modalState.type}
+                title={modalState.title}
+                message={modalState.message}
+                onClose={closeModal}
+                onAction={handleModalAction}
+                actionLabel={modalState.type === 'confirm' ? 'Yes, Delete' : modalState.type === 'success' ? 'Continue' : 'Try Again'}
+            />
             <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8 p-10 rounded-[2.5rem] border"
                  style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
                 <div>
