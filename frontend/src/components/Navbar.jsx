@@ -49,10 +49,7 @@ const Navbar = () => {
                     <div className="hidden md:flex items-center gap-4 px-6 border-l border-r h-full whitespace-nowrap" style={{ borderColor: 'var(--border-color)' }}>
                         <div className="flex flex-col items-start leading-none gap-1">
                             <div className="flex items-center gap-2">
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                                </span>
+                                <div className="h-2 w-2 rounded-full bg-green-500"></div>
                                 <span className="text-[10px] uppercase tracking-widest font-black" style={{ color: 'var(--text-muted)' }}>
                                     Placement Tracker
                                 </span>
