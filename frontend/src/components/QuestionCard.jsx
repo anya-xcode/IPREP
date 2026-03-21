@@ -1,8 +1,8 @@
 import React, { useState, memo } from 'react';
-import { ThumbsUp, Calendar, User, Briefcase, Code } from 'lucide-react';
+import { Search, Loader2, ChevronLeft, ChevronRight, ThumbsUp, Calendar, Bookmark, Briefcase, Code } from 'lucide-react';
 import { format } from 'date-fns';
 
-const QuestionCard = memo(({ question, onUpvote }) => {
+const QuestionCard = memo(({ question, onUpvote, onBookmark }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     return (
@@ -48,10 +48,43 @@ const QuestionCard = memo(({ question, onUpvote }) => {
                         </div>
                     </div>
                     
-                    <button className="text-[10px] uppercase tracking-widest font-black px-4 py-2 rounded-full border transition-all group-hover:bg-black group-hover:text-white"
-                            style={{ borderColor: 'var(--border-color)' }}>
-                        {isExpanded ? 'Hide Answer' : 'Show Answer'}
-                    </button>
+                    <div className="flex flex-row md:flex-col items-center md:items-end gap-3 w-full md:w-auto">
+                        <button 
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onUpvote(question.id);
+                            }}
+                            className="flex items-center gap-2 px-4 py-2 rounded-full border transition-all hover:bg-zinc-100 active:scale-90"
+                            style={{ borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
+                        >
+                            <ThumbsUp size={14} className={question.upvotes?.length > 0 ? "fill-current" : ""} />
+                            <span className="text-[10px] font-black uppercase tracking-widest">
+                                {question.upvotes?.length || 0}
+                            </span>
+                        </button>
+
+                        <button 
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onBookmark(question.id);
+                            }}
+                            className="flex items-center gap-2 px-4 py-2 rounded-full border transition-all hover:bg-zinc-100 active:scale-90"
+                            style={{ 
+                                borderColor: 'var(--border-color)', 
+                                color: question.bookmarks?.includes(localStorage.getItem('iprep_user_id')) ? 'var(--text-primary)' : 'var(--text-muted)' 
+                            }}
+                        >
+                            <Bookmark 
+                                size={14} 
+                                className={question.bookmarks?.includes(localStorage.getItem('iprep_user_id')) ? "fill-current" : ""} 
+                            />
+                        </button>
+
+                        <button className="text-[10px] uppercase tracking-widest font-black px-4 py-2 rounded-full border transition-all group-hover:bg-black group-hover:text-white w-full md:w-auto"
+                                style={{ borderColor: 'var(--border-color)' }}>
+                            {isExpanded ? 'Hide Answer' : 'Show Answer'}
+                        </button>
+                    </div>
                 </div>
             </div>
 

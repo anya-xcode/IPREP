@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import QuestionCard from '../components/QuestionCard';
-import { Search, Loader2, ChevronLeft, ChevronRight, Zap } from 'lucide-react';
+import { Search, Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
 import io from 'socket.io-client';
 import API_URL, { IS_PRODUCTION } from '../api/config';
 
@@ -51,12 +51,26 @@ const Home = () => {
         }
     }, []);
 
+    const handleBookmark = useCallback(async (id) => {
+        let userId = localStorage.getItem('iprep_user_id');
+        if (!userId) {
+            userId = 'user_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('iprep_user_id', userId);
+        }
+        try {
+            const { data } = await axios.post(`${API_URL}/api/questions/${id}/bookmark`, { userId });
+            setQuestions(prevQuestions => prevQuestions.map(q => q.id === id ? data : q));
+        } catch (err) {
+            console.error(err);
+        }
+    }, []);
+
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
                 <div>
                     <h1 className="text-4xl md:text-6xl font-black mb-4 flex items-center gap-4 tracking-tighter" style={{ color: 'var(--text-primary)' }}>
-                        Iprep Central <Zap style={{ color: 'var(--text-primary)', fill: 'var(--text-primary)' }} size={40} />
+                        Iprep Central
                     </h1>
                     <p className="max-w-lg text-lg font-medium" style={{ color: 'var(--text-muted)' }}>
                         Real interview questions from top companies, verified by our community and moderators.
@@ -108,7 +122,7 @@ const Home = () => {
                         <>
                             <div className="flex flex-col gap-6">
                                 {questions.map((q) => (
-                                    <QuestionCard key={q.id} question={q} onUpvote={handleUpvote} />
+                                    <QuestionCard key={q.id} question={q} onUpvote={handleUpvote} onBookmark={handleBookmark} />
                                 ))}
                             </div>
 
