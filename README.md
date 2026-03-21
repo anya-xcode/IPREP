@@ -4,7 +4,7 @@ IPREP is a comprehensive, community-driven platform designed to help students an
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 ### For Users
 * **Experience Sharing**: A detailed, user-friendly form to submit questions faced during recent interviews, including specific roles, rounds (e.g., Technical, HR), and associated tech stacks.
@@ -30,7 +30,6 @@ IPREP is a comprehensive, community-driven platform designed to help students an
   * [React](https://react.dev/) (v19) with [Vite](https://vitejs.dev/)
   * [Tailwind CSS](https://tailwindcss.com/) (v4) for rapid UI styling
   * [React Router Dom](https://reactrouter.com/) for navigation
-  * [Lucide React](https://lucide.dev/) for beautiful SVG icons
 * **Backend**:
   * [Node.js](https://nodejs.org/) & [Express.js](https://expressjs.com/)
   * [Prisma ORM](https://www.prisma.io/) for type-safe database access
@@ -59,7 +58,7 @@ IPREP/
 
 ---
 
-## 💻 Getting Started
+## Getting Started
 
 ### Prerequisites
 * Node.js (v18+ recommended)
@@ -127,5 +126,5 @@ The application should now be running. The frontend will typically be accessible
 
 ---
 
-## 🔒 Administration Access
+## Administration Access
 To access the `/admin` moderation panel, you must authenticate using the configured Admin Password. By default, ensure your backend `.env` variables and `AdminSettings` in the database are synced to allow secure entry.
