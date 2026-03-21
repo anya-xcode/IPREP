@@ -6,8 +6,10 @@ const {
     getAdminQuestions,
     updateStatus,
     upvoteQuestion,
-    updateQuestion,
-    deleteQuestion
+    updateQuestion, // Kept updateQuestion as per "without making any unrelated edits"
+    deleteQuestion,
+    changeAdminPassword, // Added as per example
+    bookmarkQuestion // Added as per instruction
 } = require("../controllers/questionController");
 
 const { PrismaClient } = require("@prisma/client");
@@ -37,6 +39,7 @@ const adminAuth = async (req, res, next) => {
 router.get("/", getQuestions);
 router.post("/", createQuestion);
 router.post("/:id/upvote", upvoteQuestion);
+router.post('/:id/bookmark', bookmarkQuestion); // Registered bookmarkQuestion route
 
 // Admin routes
 router.get("/admin", adminAuth, getAdminQuestions);
@@ -58,5 +61,11 @@ router.patch("/admin/change-password", adminAuth, async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+
+// Placement Stats
+const { getStats, updateStats, importQuestions } = require("../controllers/questionController");
+router.get("/stats", getStats);
+router.patch("/admin/stats", adminAuth, updateStats);
+router.post("/admin/import", adminAuth, importQuestions);
 
 module.exports = router;

@@ -41,13 +41,16 @@ model Question {
   experience      String?
   status          Status     @default(PENDING)
   upvotes         String[]
+  bookmarks       String[]
   answer          String?
   createdAt       DateTime   @default(now())
 }
 
 model AdminSettings {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  password String @default("admin123")
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  password        String @default("admin123")
+  placedStudents  Int    @default(1438)
+  totalStudents   Int    @default(2500)
 }
 
 model Resource {

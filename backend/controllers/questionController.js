@@ -121,8 +121,7 @@ exports.upvoteQuestion = async (req, res) => {
             where: { id },
             data: {
                 upvotes: {
-                    // Simple increment for anonymous upvoting
-                    set: { push: "anonymous_vote_" + Date.now() }
+                    push: "anonymous_vote_" + Date.now()
                 }
             }
         });
@@ -145,11 +144,104 @@ exports.updateQuestion = async (req, res) => {
     }
 };
 
+exports.bookmarkQuestion = async (req, res) => {
+    const { id } = req.params;
+    const { userId } = req.body;
+    try {
+        const question = await prisma.question.findUnique({ where: { id } });
+        if (!question) return res.status(404).json({ message: 'Question not found' });
+        
+        const bookmarks = question.bookmarks || [];
+        const exists = bookmarks.includes(userId);
+        
+        const updatedQuestion = await prisma.question.update({
+            where: { id },
+            data: {
+                bookmarks: exists 
+                    ? { set: bookmarks.filter(b => b !== userId) }
+                    : { push: userId }
+            }
+        });
+        res.json(updatedQuestion);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
 exports.deleteQuestion = async (req, res) => {
     const { id } = req.params;
     try {
         await prisma.question.delete({ where: { id } });
         res.json({ message: "Question deleted successfully" });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+exports.getStats = async (req, res) => {
+    try {
+        let stats = await prisma.adminSettings.findFirst();
+        if (!stats) {
+            stats = await prisma.adminSettings.create({ data: {} });
+        }
+        res.json({
+            placedStudents: stats.placedStudents,
+            totalStudents: stats.totalStudents
+        });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+exports.updateStats = async (req, res) => {
+    const { placedStudents, totalStudents } = req.body;
+    try {
+        let stats = await prisma.adminSettings.findFirst();
+        if (!stats) {
+            stats = await prisma.adminSettings.create({ data: {} });
+        }
+        const updated = await prisma.adminSettings.update({
+            where: { id: stats.id },
+            data: {
+                placedStudents: parseInt(placedStudents),
+                totalStudents: parseInt(totalStudents)
+            }
+        });
+        res.json(updated);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+exports.importQuestions = async (req, res) => {
+    const { questions } = req.body;
+    if (!Array.isArray(questions)) {
+        return res.status(400).json({ message: "Invalid data format. Expected an array of questions." });
+    }
+
+    try {
+        // Map questions to ensure correct data types and status
+        const questionsToImport = questions.map(q => ({
+            company: q.company,
+            role: q.role,
+            techStack: Array.isArray(q.techStack) ? q.techStack : [],
+            difficulty: q.difficulty,
+            category: q.category || "TECHNICAL",
+            interviewRound: q.interviewRound,
+            description: q.description,
+            experience: q.experience || "",
+            answer: q.answer || "",
+            status: "APPROVED"
+        }));
+
+        const result = await prisma.question.createMany({
+            data: questionsToImport
+        });
+
+        res.status(201).json({ 
+            message: `Successfully imported ${result.count} questions.`,
+            count: result.count 
+        });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
