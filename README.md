@@ -22,7 +22,7 @@ IPREP is a comprehensive, community-driven platform designed to help students an
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 **IPREP** is built on the robust **MERN** stack, utilizing modern tools for speed and scalability.
 
@@ -39,7 +39,7 @@ IPREP is a comprehensive, community-driven platform designed to help students an
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 IPREP/
