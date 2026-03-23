@@ -237,12 +237,12 @@ const Upload = () => {
 
                         {questions.map((question, index) => (
                             <div key={question.id} className="relative group border rounded-2xl p-6 transition-all"
-                                 style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
+                                style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
                                 <div className="flex items-start justify-between gap-6 mb-4">
                                     <div className="flex-1 space-y-4">
                                         <div className="flex items-center gap-4">
                                             <span className="flex items-center justify-center w-8 h-8 rounded-full border text-[10px] font-black"
-                                                  style={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}>
+                                                style={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}>
                                                 {index + 1}
                                             </span>
                                             <div className="flex-1 relative">
@@ -257,7 +257,7 @@ const Upload = () => {
                                                 <div className="absolute right-0 top-1/2 -translate-y-1/2 flex gap-2">
                                                     {question.techStack.map(tech => (
                                                         <span key={tech} className="border px-2 py-0.5 rounded-lg text-[9px] uppercase font-bold flex items-center gap-1"
-                                                              style={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--border-color)', color: 'var(--text-muted)' }}>
+                                                            style={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--border-color)', color: 'var(--text-muted)' }}>
                                                             {tech}
                                                             <button type="button" onClick={() => removeTech(question.id, tech)} className="hover:text-black">×</button>
                                                         </span>

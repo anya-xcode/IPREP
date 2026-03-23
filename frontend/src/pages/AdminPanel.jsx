@@ -302,7 +302,7 @@ const AdminPanel = () => {
                 description: q.description,
                 techStack: q.techStack
             }));
-            const { data } = await axios.post(`${API_URL}/api/questions/admin/import`, 
+            const { data } = await axios.post(`${API_URL}/api/questions/admin/import`,
                 { questions: questionsToImport },
                 { headers: { 'Admin-Password': savedPass } }
             );
@@ -335,8 +335,8 @@ const AdminPanel = () => {
         return (
             <div className="max-w-md mx-auto mt-32 px-4">
                 <div className="border rounded-[2.5rem] p-10 shadow-xl text-center" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
-                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 border" 
-                         style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}>
+                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 border"
+                        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}>
                         <Lock size={32} />
                     </div>
                     <h1 className="text-3xl font-black mb-2" style={{ color: 'var(--text-primary)' }}>Restricted Access</h1>
@@ -348,10 +348,10 @@ const AdminPanel = () => {
                                 type="password"
                                 placeholder="Admin Password"
                                 className={`w-full border rounded-2xl px-6 py-4 transition-all font-bold text-center tracking-[0.5em] focus:outline-none`}
-                                style={{ 
-                                    backgroundColor: 'var(--bg-input)', 
-                                    borderColor: authError ? '#ef4444' : 'var(--border-color)', 
-                                    color: 'var(--text-primary)' 
+                                style={{
+                                    backgroundColor: 'var(--bg-input)',
+                                    borderColor: authError ? '#ef4444' : 'var(--border-color)',
+                                    color: 'var(--text-primary)'
                                 }}
                                 value={passwordInput}
                                 onChange={(e) => setPasswordInput(e.target.value)}
@@ -402,7 +402,7 @@ const AdminPanel = () => {
                 actionLabel={modalState.type === 'confirm' ? 'Yes, Delete' : modalState.type === 'success' ? 'Continue' : 'Try Again'}
             />
             <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8 p-10 rounded-[2.5rem] border"
-                 style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
+                style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
                 <div>
                     <div className="flex items-center gap-3 mb-4">
                         <div className="p-2.5 rounded-xl border" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}>
@@ -427,7 +427,7 @@ const AdminPanel = () => {
                             : { backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', color: 'var(--text-muted)' }
                         }
                     >
-                        {showAddForm ? <X size={16} /> : <PlusSquare size={16} />} 
+                        {showAddForm ? <X size={16} /> : <PlusSquare size={16} />}
                         Add Questions
                     </button>
 
@@ -629,12 +629,12 @@ const AdminPanel = () => {
 
                                 {addQuestions.map((q, idx) => (
                                     <div key={q.id} className="relative group border rounded-3xl p-8 transition-all"
-                                         style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
+                                        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
                                         <div className="flex items-start justify-between gap-8">
                                             <div className="flex-1 space-y-6">
                                                 <div className="flex items-center gap-4">
                                                     <span className="flex items-center justify-center w-8 h-8 rounded-full border text-[10px] font-black"
-                                                          style={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}>
+                                                        style={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}>
                                                         {idx + 1}
                                                     </span>
                                                     <div className="flex-1 relative">
@@ -649,7 +649,7 @@ const AdminPanel = () => {
                                                         <div className="absolute right-0 top-1/2 -translate-y-1/2 flex gap-2 overflow-x-auto max-w-[50%]">
                                                             {q.techStack.map(t => (
                                                                 <span key={t} className="border px-2 py-0.5 rounded-lg text-[9px] uppercase font-black flex items-center gap-1 whitespace-nowrap"
-                                                                      style={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--border-color)', color: 'var(--text-muted)' }}>
+                                                                    style={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--border-color)', color: 'var(--text-muted)' }}>
                                                                     {t}
                                                                     <button type="button" onClick={() => removeRowTech(q.id, t)} className="hover:text-red-500">×</button>
                                                                 </span>
@@ -758,8 +758,8 @@ const AdminPanel = () => {
                                     </button>
                                 </div>
                                 {resourceForm.links.map((link, idx) => (
-                                    <div key={idx} className="flex gap-4 items-start p-4 rounded-2xl border relative group" 
-                                         style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
+                                    <div key={idx} className="flex gap-4 items-start p-4 rounded-2xl border relative group"
+                                        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
                                         <div className="flex-1 space-y-2">
                                             <input
                                                 placeholder="Link Name (e.g. Video Guide)"
@@ -815,7 +815,7 @@ const AdminPanel = () => {
                                 />
                             </div>
                             <button type="submit" className="md:col-span-2 font-black py-4 rounded-2xl transition-all uppercase text-xs tracking-widest flex items-center justify-center gap-2"
-                                    style={{ backgroundColor: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}>
+                                style={{ backgroundColor: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}>
                                 {editingResourceId ? <><Save size={16} /> Update Resource</> : <><PlusSquare size={16} /> Add Resource</>}
                             </button>
                         </form>
@@ -828,7 +828,7 @@ const AdminPanel = () => {
                             <div className="flex justify-center py-10"><Loader2 className="animate-spin" style={{ color: 'var(--text-muted)' }} /></div>
                         ) : resources.map(r => (
                             <div key={r.id} className="border p-6 rounded-2xl flex items-center justify-between group transition-all"
-                                 style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
+                                style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
                                 <div>
                                     <h4 className="font-bold uppercase text-sm tracking-tight" style={{ color: 'var(--text-primary)' }}>{r.title}</h4>
                                     <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>{r.category} • {r.links?.[0]?.url || 'No links'}</p>
@@ -956,24 +956,24 @@ const AdminPanel = () => {
                 <div className="grid grid-cols-1 gap-8">
                     {filteredQuestions.map((q) => (
                         <div key={q.id} className="group relative border rounded-[2.5rem] p-10 transition-all duration-500"
-                             style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
+                            style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
                             {editingId === q.id ? (
                                 <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div className="space-y-3">
-                                            <input className="w-full border rounded-2xl px-6 py-4 font-bold focus:outline-none" 
-                                                   style={{ backgroundColor: 'var(--bg-input)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
-                                                   value={editForm.company} onChange={e => setEditForm({ ...editForm, company: e.target.value })} />
+                                            <input className="w-full border rounded-2xl px-6 py-4 font-bold focus:outline-none"
+                                                style={{ backgroundColor: 'var(--bg-input)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
+                                                value={editForm.company} onChange={e => setEditForm({ ...editForm, company: e.target.value })} />
                                         </div>
                                     </div>
-                                    <textarea className="w-full border rounded-3xl px-6 py-5 resize-none font-medium leading-relaxed focus:outline-none" 
-                                              style={{ backgroundColor: 'var(--bg-input)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
-                                              rows={6} value={editForm.description} onChange={e => setEditForm({ ...editForm, description: e.target.value })} />
+                                    <textarea className="w-full border rounded-3xl px-6 py-5 resize-none font-medium leading-relaxed focus:outline-none"
+                                        style={{ backgroundColor: 'var(--bg-input)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
+                                        rows={6} value={editForm.description} onChange={e => setEditForm({ ...editForm, description: e.target.value })} />
                                     <div className="flex justify-end gap-4">
                                         <button onClick={saveEdit} className="px-10 py-4 rounded-2xl flex items-center gap-3 text-xs font-black transition-all shadow-sm active:scale-95"
-                                                style={{ backgroundColor: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}><Save size={18} /> SAVE CHANGES</button>
+                                            style={{ backgroundColor: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}><Save size={18} /> SAVE CHANGES</button>
                                         <button onClick={() => setEditingId(null)} className="px-10 py-4 rounded-2xl flex items-center gap-3 text-xs font-black transition-all active:scale-95 border"
-                                                style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}><X size={18} /> CANCEL</button>
+                                            style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}><X size={18} /> CANCEL</button>
                                     </div>
                                 </div>
                             ) : (
@@ -981,7 +981,7 @@ const AdminPanel = () => {
                                     <div className="flex-1 min-w-0">
                                         <div className="flex flex-wrap items-center gap-4 mb-8">
                                             <div className="flex items-center gap-2 px-4 py-2 rounded-xl border"
-                                                 style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
+                                                style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
                                                 <Calendar size={14} style={{ color: 'var(--text-muted)' }} />
                                                 <span className="text-[11px] font-bold tracking-tight" style={{ color: 'var(--text-muted)' }}>{new Date(q.createdAt).toLocaleDateString()}</span>
                                             </div>
@@ -1007,11 +1007,11 @@ const AdminPanel = () => {
                                         </div>
                                         <div className="flex gap-4">
                                             <button onClick={() => startEdit(q)} className="w-16 h-16 border rounded-2xl transition-all flex items-center justify-center active:scale-90 hover:bg-black hover:text-white"
-                                                    style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', color: 'var(--text-muted)' }}>
+                                                style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', color: 'var(--text-muted)' }}>
                                                 <Edit3 size={24} />
                                             </button>
                                             <button onClick={() => handleDelete(q.id)} className="w-16 h-16 border rounded-2xl transition-all flex items-center justify-center active:scale-90 hover:bg-red-600 hover:text-white"
-                                                    style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', color: 'var(--text-muted)' }}>
+                                                style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', color: 'var(--text-muted)' }}>
                                                 <Trash2 size={24} />
                                             </button>
                                         </div>
