@@ -11,7 +11,6 @@ IPREP is a comprehensive, community-driven platform designed to help students an
 * **Question Dashboard**: Browse a rich database of approved interview questions. Features include dynamic search, interactive upvoting (to highlight important questions), and personal bookmarks (saved locally).
 * **HR & Behavioral Section**: A dedicated space focused entirely on non-technical, behavioral, and HR-related interview questions.
 * **Curated Resources**: Access to categorized links, guides, and materials to aid in interview preparation.
-* **Dark/Light Mode**: Full theme customization for comfortable reading.
 * **Live Placement Tracker**: A dynamic navbar widget creating a sense of community momentum by displaying real-time placement statistics.
 
 ### For Administrators
