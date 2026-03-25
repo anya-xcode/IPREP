@@ -71,6 +71,19 @@ const Upload = () => {
             });
 
             await Promise.all(promises);
+
+            setCommon({
+                company: '',
+                role: '',
+                interviewRound: '',
+                difficulty: 'MEDIUM',
+                category: 'TECHNICAL',
+                experience: ''
+            });
+            setQuestions([{ id: Date.now(), description: '', techStack: [], tempTech: '' }]);
+            setIsRoleOther(false);
+            setIsRoundOther(false);
+
             setModalState({
                 isOpen: true,
                 type: 'success',
